@@ -15,6 +15,9 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.8
+  google_fonts: ^6.3.0
+  tap_to_expand: ^0.7.2
+  new_tap_to_expand: ^0.0.1
 
 dev_dependencies:
   flutter_test:
@@ -30,6 +33,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/
     - assets/images/
     - assets/icons/
   #   - images/a_dot_ham.jpeg
