@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tap_to_expand/tap_to_expand.dart';
 import 'package:taski/constants.dart';
+import 'package:taski/widgets/todo_element_widget.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
+
+  final String testDescription =
+      "By the time a prospect arrives at your signup page, in most cases, they've already By the time a prospect arrives at your signup page, in most cases.";
 
   @override
   Widget build(BuildContext context) {
@@ -64,36 +68,50 @@ class HomePage extends StatelessWidget {
               ),
               SizedBox(height: 32),
               Expanded(
-                  child: ListView(
-                children: [
-                  TapToExpand(
-                    titlePadding: EdgeInsets.all(16),
-                    backgroundcolor: Colors.white,
-                    // closedHeight: 60,
-                    openedHeight: 100,
-                    title: Row(
-                      children: [
-                        Checkbox(
-                          value: false,
-                          side: BorderSide(color: Colors.grey, width: 2),
-                          onChanged: (val) {},
-                        ),
-                        SizedBox(width: 10),
-                        Text(
-                          'Design use case page',
-                          style: kBodyTextStyle,
-                        )
-                      ],
-                    ),
-                    content: Text(
-                        "By the time a prospect arrives at your signup page, in most cases, they've already By the time a prospect arrives at your signup page, in most cases."),
-                  )
-                ],
-              )),
+                child: ListView(
+                  children: [
+                    TodoElementWidget(
+                        title: 'Design sign up flow',
+                        description: testDescription),
+                    SizedBox(height: 16),
+                    TodoElementWidget(
+                        title: 'Design use case page',
+                        description: testDescription),
+                    SizedBox(height: 16),
+                    TodoElementWidget(
+                        title: 'Test Wireframe', description: testDescription),
+                    SizedBox(height: 16),
+                    TodoElementWidget(
+                        title: 'Create new task UI flow',
+                        description: testDescription),
+                    SizedBox(height: 16),
+                    TodoElementWidget(
+                        title: 'Collect project assets',
+                        description: testDescription),
+                    SizedBox(height: 16),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed, items: bottomNavItems),
     );
   }
 }
+
+List<BottomNavigationBarItem> bottomNavItems = [
+  BottomNavigationBarItem(
+      label: 'Todo',
+      icon: Image.asset(height: 30, "assets/icons/todo_list.png")),
+  BottomNavigationBarItem(
+      label: 'Create',
+      icon: Image.asset(height: 30, "assets/icons/plus_outlined.png")),
+  BottomNavigationBarItem(
+      label: 'Search', icon: SizedBox(height: 30, child: Icon(Icons.search))),
+  BottomNavigationBarItem(
+      label: 'Done',
+      icon: Image.asset(height: 30, "assets/icons/checked_outlined.png")),
+];
