@@ -5,11 +5,15 @@ class TodoElementWidget extends StatelessWidget {
   const TodoElementWidget({
     required this.title,
     this.description = '',
+    this.isDone = false,
+    this.onDone,
     super.key,
   });
 
   final String title;
   final String description;
+  final bool isDone;
+  final void Function(bool?)? onDone;
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
@@ -24,13 +28,15 @@ class TodoElementWidget extends StatelessWidget {
       backgroundColor: kBackGroundGrey,
       childrenPadding: EdgeInsets.only(left: 60, top: 10, bottom: 10),
       leading: Checkbox(
-        value: false,
+        value: isDone,
         side: BorderSide(color: Colors.grey, width: 2),
-        onChanged: (val) {},
+        onChanged: onDone,
       ),
       title: Text(
         title,
-        style: kBodyTextStyle,
+        style: kBodyTextStyle.copyWith(
+            decoration:
+                isDone ? TextDecoration.lineThrough : TextDecoration.none),
       ),
       showTrailingIcon: false,
       children: [

@@ -45,6 +45,9 @@ class _HomePageState extends State<HomePage> {
 
   int currentIndex = 0;
 
+  String? taskTitle;
+  String? taskDescription;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,6 +114,11 @@ class _HomePageState extends State<HomePage> {
                       return TodoElementWidget(
                         title: tasksList[index].title,
                         description: tasksList[index].description,
+                        isDone: tasksList[index].isDone,
+                        onDone: (isDone) {
+                          tasksList[index].isDone = isDone ?? false;
+                          setState(() {});
+                        },
                       );
                     }),
               ),
@@ -119,8 +127,32 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        onTap: (value) {
+        onTap: (value) async {
           currentIndex = value;
+          if (currentIndex == 1) {
+            await showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                return AddTaskSheet(
+                  onTitleChanged: (title) {
+                    taskTitle = title;
+                  },
+                  onDescriptionChanged: (description) {
+                    taskDescription = description;
+                  },
+                  onCreate: () {
+                    if (taskTitle != null) {
+                      tasksList.add(TaskModel(
+                          title: taskTitle!,
+                          description: taskDescription ?? ''));
+                      Navigator.pop(context);
+                    }
+                    // setState(() {});
+                  },
+                );
+              },
+            );
+          }
           setState(() {});
         },
         currentIndex: currentIndex,
@@ -128,6 +160,95 @@ class _HomePageState extends State<HomePage> {
         selectedItemColor: kThemeColor,
         type: BottomNavigationBarType.fixed,
         items: bottomNavItems,
+      ),
+    );
+  }
+}
+
+class AddTaskSheet extends StatelessWidget {
+  const AddTaskSheet({
+    this.onTitleChanged,
+    this.onDescriptionChanged,
+    this.onCreate,
+    super.key,
+  });
+
+  final void Function(String)? onTitleChanged;
+  final void Function(String)? onDescriptionChanged;
+  final void Function()? onCreate;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          TextField(
+            onChanged: onTitleChanged,
+            decoration: InputDecoration(
+              hintText: 'Add a title',
+              hintStyle: TextStyle(color: kTextColor02),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.transparent,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.transparent,
+                ),
+              ),
+            ),
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 15),
+                child: Icon(
+                  Icons.edit,
+                  size: 22,
+                  color: Colors.grey,
+                ),
+              ),
+              SizedBox(width: 10),
+              Expanded(
+                child: TextField(
+                  onChanged: onDescriptionChanged,
+                  maxLines: 5,
+                  decoration: InputDecoration(
+                    hintText: 'Add a description',
+                    hintStyle: TextStyle(color: kTextColor02),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.transparent,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          ElevatedButton(
+            style: TextButton.styleFrom(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            onPressed: onCreate,
+            child: Text(
+              'Create',
+              style: kBodyTextStyle.copyWith(color: kThemeColor),
+            ),
+          )
+        ],
       ),
     );
   }
