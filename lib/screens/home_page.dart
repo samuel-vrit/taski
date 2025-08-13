@@ -1,14 +1,49 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tap_to_expand/tap_to_expand.dart';
 import 'package:taski/constants.dart';
+import 'package:taski/models/task_model.dart';
 import 'package:taski/widgets/todo_element_widget.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomePage extends StatefulWidget {
+  HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final String testDescription =
       "By the time a prospect arrives at your signup page, in most cases, they've already By the time a prospect arrives at your signup page, in most cases.";
+
+  List<TaskModel> tasksList = [
+    TaskModel(
+        title: 'Design sign up flow',
+        description:
+            "By the time a prospect arrives at your signup page, in most cases, they've already By the time a prospect arrives at your signup page, in most cases."),
+    TaskModel(
+        title: 'Design use case page',
+        description:
+            "By the time a prospect arrives at your signup page, in most cases, they've already By the time a prospect arrives at your signup page, in most cases."),
+    TaskModel(
+        title: 'Test Wireframe',
+        description:
+            "By the time a prospect arrives at your signup page, in most cases, they've already By the time a prospect arrives at your signup page, in most cases."),
+    TaskModel(
+        title: 'Create new task UI flow',
+        description:
+            "By the time a prospect arrives at your signup page, in most cases, they've already By the time a prospect arrives at your signup page, in most cases."),
+    TaskModel(
+        title: 'Collect project assets',
+        description:
+            "By the time a prospect arrives at your signup page, in most cases, they've already By the time a prospect arrives at your signup page, in most cases."),
+    TaskModel(
+        title: 'Collect Skills list',
+        description:
+            "By the time a prospect arrives at your signup page, in most cases, they've already By the time a prospect arrives at your signup page, in most cases."),
+  ];
+
+  int currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +55,6 @@ class HomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Image.asset(
                     'assets/app_logo.png',
@@ -68,50 +102,40 @@ class HomePage extends StatelessWidget {
               ),
               SizedBox(height: 32),
               Expanded(
-                child: ListView(
-                  children: [
-                    TodoElementWidget(
-                        title: 'Design sign up flow',
-                        description: testDescription),
-                    SizedBox(height: 16),
-                    TodoElementWidget(
-                        title: 'Design use case page',
-                        description: testDescription),
-                    SizedBox(height: 16),
-                    TodoElementWidget(
-                        title: 'Test Wireframe', description: testDescription),
-                    SizedBox(height: 16),
-                    TodoElementWidget(
-                        title: 'Create new task UI flow',
-                        description: testDescription),
-                    SizedBox(height: 16),
-                    TodoElementWidget(
-                        title: 'Collect project assets',
-                        description: testDescription),
-                    SizedBox(height: 16),
-                  ],
-                ),
+                child: ListView.separated(
+                    itemCount: tasksList.length,
+                    separatorBuilder: (_, __) {
+                      return SizedBox(height: 16);
+                    },
+                    itemBuilder: (context, index) {
+                      return TodoElementWidget(
+                        title: tasksList[index].title,
+                        description: tasksList[index].description,
+                      );
+                    }),
               ),
             ],
           ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed, items: bottomNavItems),
+        onTap: (value) {
+          currentIndex = value;
+          setState(() {});
+        },
+        currentIndex: currentIndex,
+        unselectedItemColor: Colors.grey,
+        selectedItemColor: kThemeColor,
+        type: BottomNavigationBarType.fixed,
+        items: bottomNavItems,
+      ),
     );
   }
 }
 
 List<BottomNavigationBarItem> bottomNavItems = [
-  BottomNavigationBarItem(
-      label: 'Todo',
-      icon: Image.asset(height: 30, "assets/icons/todo_list.png")),
-  BottomNavigationBarItem(
-      label: 'Create',
-      icon: Image.asset(height: 30, "assets/icons/plus_outlined.png")),
-  BottomNavigationBarItem(
-      label: 'Search', icon: SizedBox(height: 30, child: Icon(Icons.search))),
-  BottomNavigationBarItem(
-      label: 'Done',
-      icon: Image.asset(height: 30, "assets/icons/checked_outlined.png")),
+  BottomNavigationBarItem(label: 'Todo', icon: Icon(Icons.view_list)),
+  BottomNavigationBarItem(label: 'Create', icon: Icon(Icons.add_box_outlined)),
+  BottomNavigationBarItem(label: 'Search', icon: Icon(Icons.search)),
+  BottomNavigationBarItem(label: 'Done', icon: Icon(Icons.check_box_outlined)),
 ];
