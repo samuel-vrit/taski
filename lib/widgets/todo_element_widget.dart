@@ -35,8 +35,8 @@ class TodoElementWidget extends StatelessWidget {
       title: Text(
         title,
         style: kBodyTextStyle.copyWith(
-            decoration:
-                isDone ? TextDecoration.lineThrough : TextDecoration.none),
+          decoration: isDone ? TextDecoration.lineThrough : TextDecoration.none,
+        ),
       ),
       showTrailingIcon: false,
       children: [
