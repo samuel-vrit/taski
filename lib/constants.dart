@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 Color kThemeColor = Color(0xff2D7EE7);
 Color kBackGroundGrey = Color(0xffF5F7F9);
+Color kBorderColor = Color(0xffBBBBBB);
 
 Color kTextColor02 = Color(0xff8d9bb8);
 

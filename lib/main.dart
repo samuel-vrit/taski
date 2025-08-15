@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taski/screens/dashboard_page.dart';
 import 'package:taski/screens/home_page.dart';
 
 void main() {
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: HomePage(),
+      home: DashboardPage(),
     );
   }
 }
