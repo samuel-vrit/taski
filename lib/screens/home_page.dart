@@ -138,7 +138,6 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavigationBar(
         onTap: (value) async {
           currentIndex = value;
-
           if (currentIndex == 1) {
             showModalBottomSheet(
                 context: context,
