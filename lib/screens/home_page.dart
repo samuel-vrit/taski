@@ -43,15 +43,6 @@ class _HomePageState extends State<HomePage> {
             "By the time a prospect arrives at your signup page, in most cases, they've already By the time a prospect arrives at your signup page, in most cases."),
   ];
 
-  List<TaskModel> unDoneTasks = [];
-  @override
-  void initState() {
-    unDoneTasks = tasksList.where((e) {
-      return e.isDone == false;
-    }).toList();
-    super.initState();
-  }
-
   int currentIndex = 0;
   String? taskTitle;
   String? taskDescription;
@@ -114,18 +105,18 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 32),
               Expanded(
                 child: ListView.separated(
-                    itemCount: unDoneTasks.length,
+                    itemCount: tasksList.length,
                     separatorBuilder: (_, __) {
                       return SizedBox(height: 16);
                     },
                     itemBuilder: (context, index) {
                       return TodoElementWidget(
-                        title: unDoneTasks[index].title,
-                        description: unDoneTasks[index].description,
-                        isDone: unDoneTasks[index].isDone,
+                        title: tasksList[index].title,
+                        description: tasksList[index].description,
+                        isDone: tasksList[index].isDone,
                         onDone: (isDone) {
-                          // unDoneTasks[index].isDone = isDone ?? false;
-                          unDoneTasks.removeAt(index);
+                          tasksList[index].isDone = isDone ?? false;
+                          // tasksList.removeAt(index);
                           setState(() {});
                         },
                       );
