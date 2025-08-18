@@ -7,7 +7,7 @@ import 'package:taski/widgets/custom_app_bar.dart';
 import 'package:taski/widgets/todo_element_widget.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({required this.tasksList, super.key});
+  const HomePage({required this.tasksList, super.key});
 
   final List<TaskModel> tasksList;
 
@@ -61,9 +61,10 @@ class _HomePageState extends State<HomePage> {
                       return TodoElementWidget(
                         title: widget.tasksList[index].title,
                         description: widget.tasksList[index].description,
-                        isDone: widget.tasksList[index].isDone,
+                        isDone: widget.tasksList[index].status == 'done',
                         onDone: (isDone) {
-                          widget.tasksList[index].isDone = isDone ?? false;
+                          widget.tasksList[index].status =
+                              isDone ?? false ? 'done' : 'undone';
                           setState(() {});
                         },
                       );
