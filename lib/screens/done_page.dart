@@ -1,9 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:taski/constants.dart';
+import 'package:taski/models/task_model.dart';
 import 'package:taski/widgets/custom_app_bar.dart';
 
-class DonePage extends StatelessWidget {
-  const DonePage({super.key});
+class DonePage extends StatefulWidget {
+  const DonePage({required this.allTasks, super.key});
+
+  final List<TaskModel> allTasks;
+
+  @override
+  State<DonePage> createState() => _DonePageState();
+}
+
+class _DonePageState extends State<DonePage> {
+  List<TaskModel> doneTasks = [];
+
+  @override
+  void initState() {
+    init();
+    super.initState();
+  }
+
+  init() {
+    doneTasks = widget.allTasks.where((task) {
+      return task.status == 'done';
+    }).toList();
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,18 +45,31 @@ class DonePage extends StatelessWidget {
                     'Completed Tasks',
                     style: kHeadingTextStyle1,
                   ),
-                  Text(
-                    'Delete all',
-                    style: kBodyTextStyle.copyWith(color: Colors.red),
+                  GestureDetector(
+                    onTap: () {
+                      doneTasks.clear();
+                      setState(() {});
+                    },
+                    child: Text(
+                      'Delete all',
+                      style: kBodyTextStyle.copyWith(color: Colors.red),
+                    ),
                   ),
                 ],
               ),
               SizedBox(height: 32),
               Expanded(
                 child: ListView.separated(
-                    itemBuilder: (context, index) => DeleteTaskElement(),
-                    separatorBuilder: (context, index) => SizedBox(height: 10),
-                    itemCount: 20),
+                  itemCount: doneTasks.length,
+                  itemBuilder: (context, index) => DeleteTaskElement(
+                    title: doneTasks[index].title,
+                    onDelete: () {
+                      doneTasks.removeAt(index);
+                      setState(() {});
+                    },
+                  ),
+                  separatorBuilder: (context, index) => SizedBox(height: 10),
+                ),
               )
             ],
           ),
@@ -45,9 +81,13 @@ class DonePage extends StatelessWidget {
 
 class DeleteTaskElement extends StatelessWidget {
   const DeleteTaskElement({
+    required this.title,
+    this.onDelete,
     super.key,
   });
 
+  final String title;
+  final void Function()? onDelete;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -58,20 +98,23 @@ class DeleteTaskElement extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Checkbox(
-            value: true,
-            side: BorderSide(color: Colors.grey, width: 2),
-            onChanged: (val) {},
-          ),
+          // Checkbox(
+          //   value: true,
+          //   side: BorderSide(color: Colors.grey, width: 2),
+          //   onChanged: (val) {},
+          // ),
           SizedBox(width: 16),
           Text(
-            'Design use case page',
+            title,
             style: kBodyTextStyle.copyWith(color: kTextColor02),
           ),
           Spacer(),
-          Icon(
-            Icons.delete,
-            color: Colors.red,
+          GestureDetector(
+            onTap: onDelete,
+            child: Icon(
+              Icons.delete,
+              color: Colors.red,
+            ),
           )
         ],
       ),

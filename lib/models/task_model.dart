@@ -1,7 +1,8 @@
 class TaskModel {
-  TaskModel({required this.title, this.description = '', this.isDone = false});
+  TaskModel(
+      {required this.title, this.description = '', this.status = 'undone'});
 
   final String title;
   final String description;
-  bool isDone;
+  String status;
 }

@@ -53,8 +53,8 @@ class _DashboardPageState extends State<DashboardPage> {
       body: [
         HomePage(tasksList: tasksList),
         HomePage(tasksList: tasksList),
-        SearchPage(),
-        DonePage()
+        SearchPage(allTasks: tasksList),
+        DonePage(allTasks: tasksList),
       ][currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         onTap: (value) async {
