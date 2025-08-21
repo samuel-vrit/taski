@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:taski/constants.dart';
 import 'package:taski/models/task_model.dart';
+import 'package:taski/provider/task_provider.dart';
 import 'package:taski/screens/done_page.dart';
 import 'package:taski/screens/home_page.dart';
 import 'package:taski/screens/search_page.dart';
@@ -49,12 +51,13 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
+    var taskss = context.watch<TaskProvider>().allTasks;
     return Scaffold(
       body: [
-        HomePage(tasksList: tasksList),
-        HomePage(tasksList: tasksList),
-        SearchPage(allTasks: tasksList),
-        DonePage(allTasks: tasksList),
+        HomePage(),
+        HomePage(),
+        SearchPage(allTasks: taskss),
+        DonePage(allTasks: taskss),
       ][currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         onTap: (value) async {

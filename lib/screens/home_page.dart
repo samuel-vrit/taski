@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:taski/constants.dart';
 import 'package:taski/models/task_model.dart';
+import 'package:taski/provider/task_provider.dart';
 import 'package:taski/widgets/add_task_sheet.dart';
 import 'package:taski/widgets/custom_app_bar.dart';
 import 'package:taski/widgets/todo_element_widget.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({required this.tasksList, super.key});
-
-  final List<TaskModel> tasksList;
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var taskss = context.watch<TaskProvider>().allTasks;
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -43,7 +44,7 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 5),
               Text(
-                'You’ve got ${widget.tasksList.length} tasks to do.',
+                'You’ve got ${context.watch<TaskProvider>().allTasks.length} tasks to do.',
                 style: GoogleFonts.urbanist(
                   fontWeight: FontWeight.normal,
                   fontSize: 16,
@@ -53,19 +54,17 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 32),
               Expanded(
                 child: ListView.separated(
-                    itemCount: widget.tasksList.length,
+                    itemCount: context.watch<TaskProvider>().allTasks.length,
                     separatorBuilder: (_, __) {
                       return SizedBox(height: 16);
                     },
                     itemBuilder: (context, index) {
                       return TodoElementWidget(
-                        title: widget.tasksList[index].title,
-                        description: widget.tasksList[index].description,
-                        isDone: widget.tasksList[index].status == 'done',
+                        title: taskss[index].title,
+                        description: taskss[index].description,
+                        isDone: taskss[index].status == 'done',
                         onDone: (isDone) {
-                          widget.tasksList[index].status =
-                              isDone! ? 'done' : 'undone';
-                          setState(() {});
+                          context.read<TaskProvider>().removeTask(index);
                         },
                       );
                     }),
