@@ -27,11 +27,13 @@ class _SearchPageState extends State<SearchPage> {
               SizedBox(height: 32),
               TextField(
                 onChanged: (searchText) {
-                  filteredTasks = widget.allTasks.where((task) {
-                    return task.title
-                        .toLowerCase()
-                        .contains(searchText.toLowerCase());
-                  }).toList();
+                  if (searchText.isNotEmpty) {
+                    filteredTasks = widget.allTasks.where((task) {
+                      return task.title
+                          .toLowerCase()
+                          .contains(searchText.toLowerCase());
+                    }).toList();
+                  }
                   setState(() {});
                 },
                 decoration: InputDecoration(

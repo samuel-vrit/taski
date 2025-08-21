@@ -45,9 +45,15 @@ class _DonePageState extends State<DonePage> {
                     'Completed Tasks',
                     style: kHeadingTextStyle1,
                   ),
-                  Text(
-                    'Delete all',
-                    style: kBodyTextStyle.copyWith(color: Colors.red),
+                  GestureDetector(
+                    onTap: () {
+                      doneTasks.clear();
+                      setState(() {});
+                    },
+                    child: Text(
+                      'Delete all',
+                      style: kBodyTextStyle.copyWith(color: Colors.red),
+                    ),
                   ),
                 ],
               ),

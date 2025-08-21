@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                         isDone: widget.tasksList[index].status == 'done',
                         onDone: (isDone) {
                           widget.tasksList[index].status =
-                              isDone ?? false ? 'done' : 'undone';
+                              isDone! ? 'done' : 'undone';
                           setState(() {});
                         },
                       );
