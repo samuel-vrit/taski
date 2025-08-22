@@ -18,6 +18,9 @@ dependencies:
   google_fonts: ^6.3.0
   tap_to_expand: ^0.7.2
   new_tap_to_expand: ^0.0.1
+  provider: ^6.1.5+1
+  fluttertoast: ^8.2.12
+  shared_preferences: ^2.5.3
 
 dev_dependencies:
   flutter_test:

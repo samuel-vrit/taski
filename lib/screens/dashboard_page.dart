@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:taski/constants.dart';
 import 'package:taski/models/task_model.dart';
+import 'package:taski/providers/task_provider.dart';
 import 'package:taski/screens/done_page.dart';
 import 'package:taski/screens/home_page.dart';
 import 'package:taski/screens/search_page.dart';
@@ -20,41 +23,14 @@ class _DashboardPageState extends State<DashboardPage> {
 
   String? taskDescription;
 
-  List<TaskModel> tasksList = [
-    TaskModel(
-        title: 'Design sign up flow',
-        description:
-            "By the time a prospect arrives at your signup page, in most cases, they've already By the time a prospect arrives at your signup page, in most cases."),
-    TaskModel(
-        title: 'Design use case page',
-        description:
-            "By the time a prospect arrives at your signup page, in most cases, they've already By the time a prospect arrives at your signup page, in most cases."),
-    TaskModel(
-        title: 'Test Wireframe',
-        description:
-            "By the time a prospect arrives at your signup page, in most cases, they've already By the time a prospect arrives at your signup page, in most cases."),
-    TaskModel(
-        title: 'Create new task UI flow',
-        description:
-            "By the time a prospect arrives at your signup page, in most cases, they've already By the time a prospect arrives at your signup page, in most cases."),
-    TaskModel(
-        title: 'Collect project assets',
-        description:
-            "By the time a prospect arrives at your signup page, in most cases, they've already By the time a prospect arrives at your signup page, in most cases."),
-    TaskModel(
-        title: 'Collect Skills list',
-        description:
-            "By the time a prospect arrives at your signup page, in most cases, they've already By the time a prospect arrives at your signup page, in most cases."),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: [
-        HomePage(tasksList: tasksList),
-        HomePage(tasksList: tasksList),
-        SearchPage(allTasks: tasksList),
-        DonePage(allTasks: tasksList),
+        HomePage(),
+        HomePage(),
+        SearchPage(),
+        DonePage(),
       ][currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         onTap: (value) async {
@@ -72,14 +48,18 @@ class _DashboardPageState extends State<DashboardPage> {
                     },
                     onCreate: () {
                       if (taskTitle != null) {
-                        tasksList.add(TaskModel(
-                            title: taskTitle ?? '',
+                        context.read<TaskProvider>().addTask(TaskModel(
+                            title: taskTitle ?? 'No title',
                             description: taskDescription ?? ''));
-
                         taskTitle = null;
+                        taskDescription = null;
                         Navigator.pop(context);
+                      } else {
+                        Fluttertoast.showToast(
+                          msg: 'Task title cannot be empty',
+                          backgroundColor: Colors.red,
+                        );
                       }
-                      setState(() {});
                     },
                   );
                 });
