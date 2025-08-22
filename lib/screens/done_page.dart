@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:taski/constants.dart';
-import 'package:taski/models/task_model.dart';
+import 'package:taski/providers/task_provider.dart';
 import 'package:taski/widgets/custom_app_bar.dart';
 
 class DonePage extends StatefulWidget {
-  const DonePage({required this.allTasks, super.key});
-
-  final List<TaskModel> allTasks;
+  const DonePage({super.key});
 
   @override
   State<DonePage> createState() => _DonePageState();
 }
 
 class _DonePageState extends State<DonePage> {
-  List<TaskModel> doneTasks = [];
-
   @override
   void initState() {
     init();
@@ -22,59 +19,68 @@ class _DonePageState extends State<DonePage> {
   }
 
   init() {
-    doneTasks = widget.allTasks.where((task) {
-      return task.status == 'done';
-    }).toList();
-    setState(() {});
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<TaskProvider>().filterDoneTasks();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              CustomAppBar(),
-              SizedBox(height: 32),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Consumer<TaskProvider>(
+      builder: (context, taskProvider, child) {
+        return Scaffold(
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
                 children: [
-                  Text(
-                    'Completed Tasks',
-                    style: kHeadingTextStyle1,
+                  CustomAppBar(),
+                  SizedBox(height: 32),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Completed Tasks',
+                        style: kHeadingTextStyle1,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          // doneTasks.clear();
+                          // setState(() {});
+                        },
+                        child: ElevatedButton(
+                          onPressed: () {
+                            context.read<TaskProvider>().deleteAllDoneTasks();
+                          },
+                          child: Text(
+                            'Delete all',
+                            style: kBodyTextStyle.copyWith(color: Colors.red),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      doneTasks.clear();
-                      setState(() {});
-                    },
-                    child: Text(
-                      'Delete all',
-                      style: kBodyTextStyle.copyWith(color: Colors.red),
+                  SizedBox(height: 32),
+                  Expanded(
+                    child: ListView.separated(
+                      itemCount: taskProvider.doneTasks.length,
+                      itemBuilder: (context, index) => DeleteTaskElement(
+                        title: taskProvider.doneTasks[index].title,
+                        onDelete: () {
+                          taskProvider
+                              .deleteDoneTask(taskProvider.doneTasks[index]);
+                        },
+                      ),
+                      separatorBuilder: (context, index) =>
+                          SizedBox(height: 10),
                     ),
-                  ),
+                  )
                 ],
               ),
-              SizedBox(height: 32),
-              Expanded(
-                child: ListView.separated(
-                  itemCount: doneTasks.length,
-                  itemBuilder: (context, index) => DeleteTaskElement(
-                    title: doneTasks[index].title,
-                    onDelete: () {
-                      doneTasks.removeAt(index);
-                      setState(() {});
-                    },
-                  ),
-                  separatorBuilder: (context, index) => SizedBox(height: 10),
-                ),
-              )
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
