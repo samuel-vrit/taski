@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:taski/constants.dart';
 import 'package:taski/screens/dashboard_page.dart';
 import 'package:taski/screens/onboarding_page.dart';
 
@@ -36,7 +35,7 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: CircularProgressIndicator(),
+        child: Image.asset('assets/app_logo.png', height: 180),
       ),
     );
   }
