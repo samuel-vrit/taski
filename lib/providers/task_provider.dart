@@ -46,6 +46,7 @@ class TaskProvider extends ChangeNotifier {
 
   void toggleDone(bool isDone, int index) {
     allTasks[index].status = isDone ? 'done' : 'unDone';
+    filterDoneTasks();
     notifyListeners();
   }
 

@@ -10,6 +10,7 @@ Color kTextColor02 = Color(0xff8d9bb8);
 TextStyle kHeadingTextStyle1 = GoogleFonts.urbanist(
   fontSize: 20,
   fontWeight: FontWeight.bold,
+  color: Colors.black,
 );
 
 TextStyle kHeadingTextStyle2 =

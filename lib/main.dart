@@ -30,31 +30,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: FirebaseTest(),
-      ),
-    );
-  }
-}
-
-class FirebaseTest extends StatelessWidget {
-  const FirebaseTest({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: FutureBuilder(
-            future: Firebase.initializeApp(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return Text('Successfully configured firebase');
-              }
-              if (snapshot.hasError) {
-                return Text('Error : ${snapshot.error}');
-              }
-
-              return CircularProgressIndicator();
-            }),
+        home: SplashPage(),
       ),
     );
   }

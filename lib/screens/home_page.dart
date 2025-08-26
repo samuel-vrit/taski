@@ -34,7 +34,7 @@ class HomePage extends StatelessWidget {
                 ),
                 SizedBox(height: 5),
                 Text(
-                  'You’ve got ${taskProvider.allTasks.length} tasks to do.',
+                  'You’ve got ${taskProvider.allTasks.length - taskProvider.doneTasks.length} tasks to do.',
                   style: GoogleFonts.urbanist(
                     fontWeight: FontWeight.normal,
                     fontSize: 16,
