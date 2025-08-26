@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:taski/providers/task_provider.dart';
+import 'package:taski/screens/login_page.dart';
 import 'package:taski/screens/splash_page.dart';
 
 import 'firebase_options.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: SplashPage(),
+        home: LoginPage(),
       ),
     );
   }
