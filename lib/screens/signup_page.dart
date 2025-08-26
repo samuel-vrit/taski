@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:taski/constants.dart';
 
 class SignupPage extends StatefulWidget {
@@ -147,7 +148,14 @@ class _SignupPageState extends State<SignupPage> {
               ),
               SizedBox(height: 20),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  if (!(password == password2)) {
+                    Fluttertoast.showToast(
+                        msg: 'Passwords must be same',
+                        backgroundColor: Colors.red);
+                    return;
+                  }
+                },
                 child: Container(
                   height: 45,
                   width: double.infinity,
