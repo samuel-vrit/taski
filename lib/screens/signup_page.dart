@@ -197,7 +197,10 @@ class _SignupPageState extends State<SignupPage> {
 
                   //Sign up function
                   context.read<AppAuthProvider>().signUp(
-                      email: email!, password: password!, context: context);
+                      email: email!,
+                      password: password!,
+                      name: name!,
+                      context: context);
                 },
                 child: Container(
                   height: 45,

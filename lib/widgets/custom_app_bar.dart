@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:taski/constants.dart';
+import 'package:taski/providers/app_auth_provider.dart';
 import 'package:taski/screens/login_page.dart';
 
 class CustomAppBar extends StatelessWidget {
@@ -24,7 +26,7 @@ class CustomAppBar extends StatelessWidget {
         ),
         Spacer(),
         Text(
-          'John',
+          context.watch<AppAuthProvider>().userData?.name ?? 'Loading..',
           style: kHeadingTextStyle2,
         ),
         SizedBox(width: 10),

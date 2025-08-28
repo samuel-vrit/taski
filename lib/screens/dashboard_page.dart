@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -46,11 +47,14 @@ class _DashboardPageState extends State<DashboardPage> {
                     onDescriptionChanged: (description) {
                       taskDescription = description;
                     },
-                    onCreate: () {
+                    onCreate: () async {
                       if (taskTitle != null) {
-                        context.read<TaskProvider>().addTask(TaskModel(
-                            title: taskTitle ?? 'No title',
-                            description: taskDescription ?? ''));
+                        await context.read<TaskProvider>().addTask(TaskModel(
+                              title: taskTitle ?? 'No title',
+                              description: taskDescription ?? '',
+                              createdBy:
+                                  FirebaseAuth.instance.currentUser!.email!,
+                            ));
                         taskTitle = null;
                         taskDescription = null;
                         Navigator.pop(context);
