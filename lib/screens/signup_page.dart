@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:taski/constants.dart';
+import 'package:taski/providers/app_auth_provider.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -149,12 +151,53 @@ class _SignupPageState extends State<SignupPage> {
               SizedBox(height: 20),
               GestureDetector(
                 onTap: () {
+                  if (name == null) {
+                    Fluttertoast.showToast(
+                        msg: 'Please enter your name',
+                        backgroundColor: Colors.red);
+                    return;
+                  }
+                  if (name!.isEmpty) {
+                    Fluttertoast.showToast(
+                        msg: 'Please enter your name',
+                        backgroundColor: Colors.red);
+                    return;
+                  }
+                  if (email == null) {
+                    Fluttertoast.showToast(
+                        msg: 'Please enter your email',
+                        backgroundColor: Colors.red);
+                    return;
+                  }
+                  if (email!.isEmpty) {
+                    Fluttertoast.showToast(
+                        msg: 'Please enter your email',
+                        backgroundColor: Colors.red);
+                    return;
+                  }
+                  if (password == null) {
+                    Fluttertoast.showToast(
+                        msg: 'Please enter the password',
+                        backgroundColor: Colors.red);
+                    return;
+                  }
+                  if (password!.isEmpty) {
+                    Fluttertoast.showToast(
+                        msg: 'Please enter the password',
+                        backgroundColor: Colors.red);
+                    return;
+                  }
+
                   if (!(password == password2)) {
                     Fluttertoast.showToast(
                         msg: 'Passwords must be same',
                         backgroundColor: Colors.red);
                     return;
                   }
+
+                  //Sign up function
+                  context.read<AppAuthProvider>().signUp(
+                      email: email!, password: password!, context: context);
                 },
                 child: Container(
                   height: 45,

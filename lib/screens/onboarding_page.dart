@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taski/constants.dart';
 import 'package:taski/screens/dashboard_page.dart';
+import 'package:taski/screens/login_page.dart';
 
 class OnboardingPage extends StatelessWidget {
   const OnboardingPage({super.key});
@@ -24,7 +26,9 @@ class OnboardingPage extends StatelessWidget {
           ElevatedButton(
               onPressed: () async {
                 Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => DashboardPage()));
+                    MaterialPageRoute(builder: (context) => LoginPage()));
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.setBool('isFirstTime', false);
               },
               child: Text('Get Started'))
         ],

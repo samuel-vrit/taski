@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:taski/constants.dart';
+import 'package:taski/providers/app_auth_provider.dart';
 import 'package:taski/screens/signup_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -103,7 +106,35 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: 10),
               GestureDetector(
-                onTap: () {},
+                onTap: () async {
+                  if (email == null) {
+                    Fluttertoast.showToast(
+                        msg: 'Please enter your email',
+                        backgroundColor: Colors.red);
+                    return;
+                  }
+                  if (email!.isEmpty) {
+                    Fluttertoast.showToast(
+                        msg: 'Please enter your email',
+                        backgroundColor: Colors.red);
+                    return;
+                  }
+                  if (password == null) {
+                    Fluttertoast.showToast(
+                        msg: 'Please enter the password',
+                        backgroundColor: Colors.red);
+                    return;
+                  }
+                  if (password!.isEmpty) {
+                    Fluttertoast.showToast(
+                        msg: 'Please enter the password',
+                        backgroundColor: Colors.red);
+                    return;
+                  }
+
+                  await context.read<AppAuthProvider>().signIn(
+                      email: email!, password: password!, context: context);
+                },
                 child: Container(
                   height: 45,
                   width: double.infinity,

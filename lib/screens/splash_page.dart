@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taski/providers/app_auth_provider.dart';
 import 'package:taski/screens/dashboard_page.dart';
+import 'package:taski/screens/login_page.dart';
 import 'package:taski/screens/onboarding_page.dart';
 
 class SplashPage extends StatefulWidget {
@@ -20,11 +23,13 @@ class _SplashPageState extends State<SplashPage> {
   init() async {
     final prefs = await SharedPreferences.getInstance();
     bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
-
+    bool isLoggedIn = AppAuthProvider().isLoggedIn;
     if (isFirstTime) {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => OnboardingPage()));
-      await prefs.setBool('isFirstTime', false);
+    } else if (!isLoggedIn) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => LoginPage()));
     } else {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => DashboardPage()));

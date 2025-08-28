@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:taski/providers/app_auth_provider.dart';
 import 'package:taski/providers/task_provider.dart';
 import 'package:taski/screens/login_page.dart';
 import 'package:taski/screens/splash_page.dart';
@@ -22,8 +23,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => TaskProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => TaskProvider()),
+        ChangeNotifierProvider(create: (context) => AppAuthProvider()),
+      ],
       child: MaterialApp(
         title: 'Taski',
         debugShowCheckedModeBanner: false,
@@ -31,7 +35,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: LoginPage(),
+        home: SplashPage(),
       ),
     );
   }

@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:taski/constants.dart';
+import 'package:taski/screens/login_page.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({
@@ -26,9 +28,16 @@ class CustomAppBar extends StatelessWidget {
           style: kHeadingTextStyle2,
         ),
         SizedBox(width: 10),
-        CircleAvatar(
-          radius: 18,
-          backgroundImage: AssetImage('assets/images/profile_image.png'),
+        GestureDetector(
+          onTap: () async {
+            await FirebaseAuth.instance.signOut();
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => LoginPage()));
+          },
+          child: CircleAvatar(
+            radius: 18,
+            backgroundImage: AssetImage('assets/images/profile_image.png'),
+          ),
         )
       ],
     );
