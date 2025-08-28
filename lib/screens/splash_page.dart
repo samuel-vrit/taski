@@ -31,6 +31,7 @@ class _SplashPageState extends State<SplashPage> {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => LoginPage()));
     } else {
+      await context.read<AppAuthProvider>().fetchUserData();
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => DashboardPage()));
     }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:taski/models/task_model.dart';
 
@@ -5,36 +6,10 @@ class TaskProvider extends ChangeNotifier {
   List<TaskModel> filteredTasks = [];
   List<TaskModel> doneTasks = [];
 
-  List<TaskModel> allTasks = [
-    TaskModel(
-        title: 'Design sign up flow',
-        description:
-            "By the time a prospect arrives at your signup page, in most cases, they've already By the time a prospect arrives at your signup page, in most cases."),
-    TaskModel(
-        title: 'Design use case page',
-        description:
-            "By the time a prospect arrives at your signup page, in most cases, they've already By the time a prospect arrives at your signup page, in most cases."),
-    TaskModel(
-        title: 'Test Wireframe',
-        description:
-            "By the time a prospect arrives at your signup page, in most cases, they've already By the time a prospect arrives at your signup page, in most cases."),
-    TaskModel(
-        title: 'Create new task UI flow',
-        description:
-            "By the time a prospect arrives at your signup page, in most cases, they've already By the time a prospect arrives at your signup page, in most cases."),
-    TaskModel(
-        title: 'Collect project assets',
-        description:
-            "By the time a prospect arrives at your signup page, in most cases, they've already By the time a prospect arrives at your signup page, in most cases."),
-    TaskModel(
-        title: 'Collect Skills list',
-        description:
-            "By the time a prospect arrives at your signup page, in most cases, they've already By the time a prospect arrives at your signup page, in most cases."),
-  ];
+  List<TaskModel> allTasks = [];
 
-  void addTask(TaskModel task) {
-    allTasks.add(task);
-    notifyListeners();
+  Future addTask(TaskModel task) async {
+    await FirebaseFirestore.instance.collection('allTasks').add(task.toJson());
   }
 
   void searchTask(String searchText) {
