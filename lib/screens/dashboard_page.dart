@@ -54,6 +54,8 @@ class _DashboardPageState extends State<DashboardPage> {
                               description: taskDescription ?? '',
                               createdBy:
                                   FirebaseAuth.instance.currentUser!.email!,
+                              createdAt: DateTime.now(),
+                              status: 'unDone',
                             ));
                         taskTitle = null;
                         taskDescription = null;

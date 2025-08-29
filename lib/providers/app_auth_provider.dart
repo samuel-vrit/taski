@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:taski/models/user_model.dart';
 import 'package:taski/screens/dashboard_page.dart';
+import 'package:taski/widgets/toast_widget.dart';
 
 class AppAuthProvider extends ChangeNotifier {
   //for authentication services
@@ -50,48 +51,69 @@ class AppAuthProvider extends ChangeNotifier {
       }
     } on FirebaseAuthException catch (authException) {
       //throw this error if the error is related to authentication
-      Fluttertoast.showToast(
-          msg: authException.message ?? 'Authentication error',
-          backgroundColor: Colors.red);
+      ToastWidget.error(
+          message: authException.message ?? 'Authentication error');
     } catch (e) {
       //throw this error for other types of error
       Fluttertoast.showToast(msg: e.toString(), backgroundColor: Colors.red);
     }
   }
 
+  //logging in
   Future signIn(
       {required String email,
       required String password,
       required BuildContext context}) async {
     try {
+      //get the user credentials with email and password
       var userCredential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      if (userCredential.user != null) {
-        fetchUserData();
-        Fluttertoast.showToast(msg: 'Sign in successfully');
 
+      //userCredential contains user object which contains details of user
+      if (userCredential.user != null) {
+        //if user is not null then fetch their data from firebase database
+        await fetchUserData();
+        ToastWidget.success(message: 'Sign in successfully');
+
+        //go to dashboard after fetching user data
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => DashboardPage()));
       }
     } on FirebaseAuthException catch (authException) {
-      Fluttertoast.showToast(
-          msg: authException.message ?? 'Authentication error',
-          backgroundColor: Colors.red);
+      //throw this error if the error is related to authentication
+      ToastWidget.error(
+          message: authException.message ?? 'Authentication error');
     } catch (e) {
-      Fluttertoast.showToast(msg: e.toString(), backgroundColor: Colors.red);
+      //throw this error for other types of error
+      ToastWidget.error(message: e.toString());
     }
   }
 
+  //to fetch the data of the user currently logged in
   Future fetchUserData() async {
-    var docSnapShot = await _fireStore
-        .collection('allUsers')
-        .where('email', isEqualTo: _auth.currentUser!.email)
-        .get();
-    if (docSnapShot.docs.isNotEmpty) {
-      Map<String, dynamic> response = docSnapShot.docs.first.data();
+    try {
+      //check if any user is not logged in
+      if (_auth.currentUser?.email != null) {
+        //get the user data from firebase database
+        var docSnapShot = await _fireStore
+            .collection('allUsers')
+            .where('email', isEqualTo: _auth.currentUser!.email)
+            .get();
+        if (docSnapShot.docs.isNotEmpty) {
+          //since there will be only one element in docs, so take the first element
+          Map<String, dynamic> response = docSnapShot.docs.first.data();
 
-      userData = UserModel.fromJson(response);
-      notifyListeners();
+          //update the user data
+          userData = UserModel.fromJson(response);
+          notifyListeners();
+        }
+      } else {
+        //if the user is not signed in
+        ToastWidget.error(message: 'User does not exit');
+      }
+    } catch (e) {
+      // show toast if any error occur
+      ToastWidget.error(message: e.toString());
     }
   }
 }

@@ -1,31 +1,49 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class TaskModel {
-  String title;
-  String description;
-  String status;
-  String createdBy;
-  String? createdAt;
+  final DateTime createdAt;
+  final String createdBy;
+  final String description;
+  final String status;
+  final String title;
 
   TaskModel({
-    required this.title,
-    this.description = '',
-    this.status = 'undone',
+    required this.createdAt,
     required this.createdBy,
-    this.createdAt,
+    required this.description,
+    required this.status,
+    required this.title,
   });
 
-  factory TaskModel.fromJson(Map<String, dynamic> json) => TaskModel(
-        title: json["title"],
-        description: json["description"],
-        status: json["status"],
-        createdBy: json["createdBy"],
-        createdAt: json["createdAt"],
-      );
+  factory TaskModel.fromJson(Map<String, dynamic> json) {
+    return TaskModel(
+      createdAt: _parseTimestamp(json['createdAt']),
+      createdBy: json['createdBy'],
+      description: json['description'],
+      status: json['status'],
+      title: json['title'],
+    );
+  }
 
-  Map<String, dynamic> toJson() => {
-        "title": title,
-        "description": description,
-        "status": status,
-        "createdBy": createdBy,
-        "createdAt": createdAt ?? DateTime.now(),
-      };
+  static DateTime _parseTimestamp(dynamic timestamp) {
+    if (timestamp is Timestamp) {
+      return timestamp.toDate();
+    } else if (timestamp is String) {
+      return DateTime.parse(timestamp);
+    } else if (timestamp is DateTime) {
+      return timestamp;
+    } else {
+      throw FormatException('Invalid timestamp format: $timestamp');
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'createdAt': Timestamp.fromDate(createdAt),
+      'createdBy': createdBy,
+      'description': description,
+      'status': status,
+      'title': title,
+    };
+  }
 }
