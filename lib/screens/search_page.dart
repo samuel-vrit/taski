@@ -49,7 +49,8 @@ class SearchPage extends StatelessWidget {
                           isDone: taskProvider.filteredTasks[index].status ==
                               'done',
                           onDone: (isDone) {
-                            taskProvider.toggleDone(isDone!, index);
+                            taskProvider
+                                .toggleDone(taskProvider.filteredTasks[index]);
                           },
                         );
                       }),

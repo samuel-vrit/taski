@@ -6,6 +6,7 @@ class TaskModel {
   final String description;
   final String status;
   final String title;
+  final String id;
 
   TaskModel({
     required this.createdAt,
@@ -13,6 +14,7 @@ class TaskModel {
     required this.description,
     required this.status,
     required this.title,
+    this.id = '',
   });
 
   factory TaskModel.fromJson(Map<String, dynamic> json) {
@@ -22,6 +24,7 @@ class TaskModel {
       description: json['description'],
       status: json['status'],
       title: json['title'],
+      id: json['id'],
     );
   }
 
@@ -44,6 +47,7 @@ class TaskModel {
       'description': description,
       'status': status,
       'title': title,
+      'id': id,
     };
   }
 }

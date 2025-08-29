@@ -18,6 +18,10 @@ class AppAuthProvider extends ChangeNotifier {
     return _auth.currentUser != null ? true : false;
   }
 
+  String? get currentUserEmail {
+    return _auth.currentUser!.email;
+  }
+
   //variable for saving userData
   UserModel? userData;
 
@@ -44,8 +48,7 @@ class AppAuthProvider extends ChangeNotifier {
             .set(userData.toJson());
 
         //show toast message after successful
-        Fluttertoast.showToast(msg: 'Account created successfully');
-
+        ToastWidget.success(message: 'Account created successfully');
         //exit the sign up screen and return login screen
         Navigator.pop(context);
       }
@@ -55,7 +58,7 @@ class AppAuthProvider extends ChangeNotifier {
           message: authException.message ?? 'Authentication error');
     } catch (e) {
       //throw this error for other types of error
-      Fluttertoast.showToast(msg: e.toString(), backgroundColor: Colors.red);
+      ToastWidget.error(message: e.toString());
     }
   }
 

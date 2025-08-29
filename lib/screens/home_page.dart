@@ -22,15 +22,6 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _tasksFuture = context.read<TaskProvider>().loadAllTasks();
   }
-  // @override
-  // void initState() {
-  //   init();
-  //   super.initState();
-  // }
-  //
-  // init() async {
-  //   await context.read<TaskProvider>().loadAllTasks();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -88,19 +79,21 @@ class _HomePageState extends State<HomePage> {
                               await taskProvider.loadAllTasks();
                             },
                             child: ListView.separated(
-                                itemCount: snapShot.data!.length,
+                                itemCount: taskProvider.allTasks.length,
                                 separatorBuilder: (_, __) {
                                   return SizedBox(height: 16);
                                 },
                                 itemBuilder: (context, index) {
                                   return TodoElementWidget(
-                                    title: snapShot.data![index].title,
-                                    description:
-                                        snapShot.data![index].description,
+                                    title: taskProvider.allTasks![index].title,
+                                    description: taskProvider
+                                        .allTasks![index].description,
                                     isDone:
-                                        snapShot.data![index].status == 'done',
+                                        taskProvider.allTasks![index].status ==
+                                            'done',
                                     onDone: (isDone) {
-                                      taskProvider.toggleDone(isDone!, index);
+                                      taskProvider.toggleDone(
+                                          taskProvider.allTasks![index]);
                                     },
                                   );
                                 }),

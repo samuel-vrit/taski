@@ -1,9 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:taski/constants.dart';
 import 'package:taski/models/task_model.dart';
+import 'package:taski/providers/app_auth_provider.dart';
 import 'package:taski/providers/task_provider.dart';
 import 'package:taski/screens/done_page.dart';
 import 'package:taski/screens/home_page.dart';
@@ -50,10 +50,9 @@ class _DashboardPageState extends State<DashboardPage> {
                     onCreate: () async {
                       if (taskTitle != null) {
                         await context.read<TaskProvider>().addTask(TaskModel(
-                              title: taskTitle ?? 'No title',
+                              title: taskTitle!,
                               description: taskDescription ?? '',
-                              createdBy:
-                                  FirebaseAuth.instance.currentUser!.email!,
+                              createdBy: AppAuthProvider().currentUserEmail!,
                               createdAt: DateTime.now(),
                               status: 'unDone',
                             ));
